@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import SignUp from '../components/SignUp'; // Assuming you have a SignUp component
+
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'; // Import Toastify styles
+import Login from './Login';
 
 const Footer = () => {
   const [showSignUp, setShowSignUp] = useState(false);
@@ -116,7 +117,7 @@ const Footer = () => {
       </div>
 
       {/* Show SignUp Modal when clicked */}
-      {showSignUp && <SignUp onClose1={handleSignUpClick1} />}
+      {showSignUp && <Login onClose1={handleSignUpClick1} />}
     </div>
   );
 };

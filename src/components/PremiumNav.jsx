@@ -5,49 +5,71 @@ import { IoIosNotificationsOutline } from "react-icons/io";
 import { CgProfile } from "react-icons/cg";
 import { CiBookmark } from "react-icons/ci";
 import { IoMdLogOut } from "react-icons/io";
-
+import { NavLink, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import axios from 'axios';
+import { USER_API_END_POINT } from '../utils/constant';
+import { getOtherUsers, getprofile, getUsers } from '../redux/userSlice';
 
 
 const PremiumNav = () => {
+  const {user} =useSelector(store=>store.user)
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const logoutHandler = async ()=>{
+    try {
+      const res = axios.get(`${USER_API_END_POINT}/logout`)
+      console.log(res);
+      navigate('/')
+      dispatch(getUsers(null))
+      dispatch(getOtherUsers(null))
+      dispatch(getprofile(null))
+      
+    } catch (error) {
+      
+    }
+  }
   return (
     <div className='w-[20%]'>
-        <div>
+      <div>
         <h2 className="text-2xl text-blue-400 font-bold">
-                News<span className="text-3xl text-red-500 font-bold">B</span>logs
-            </h2>
-        </div>
-        <div >
-        <div className='flex items-center gap-2 p-2 my-3 hover:bg-gray-300 hover:cursor-pointer rounded-md' >
-        <AiFillHome />
-        <p className='text-lg font-semibold'>Home</p>
+          News<span className="text-3xl text-red-500 font-bold">B</span>logs
+        </h2>
+      </div>
+      <div >
+        <NavLink to="/premium" end className={({ isActive }) =>
+          `flex items-center gap-2 p-2 my-3 hover:bg-gray-300 hover:cursor-pointer rounded-md ${isActive ? "text-gray-500" : "text-black"}`
+        }>
+          <AiFillHome />
+          <p className='text-lg font-semibold'>Home</p>
+        </NavLink>
+        <div className='flex items-center gap-2 p-2 my-3 hover:bg-gray-300 hover:cursor-pointer rounded-md'>
+          <FaHashtag />
+          <p className='text-lg font-semibold'>Explore</p>
         </div>
         <div className='flex items-center gap-2 p-2 my-3 hover:bg-gray-300 hover:cursor-pointer rounded-md'>
-        <FaHashtag />
-        <p className='text-lg font-semibold'>Explore</p>
-        </div>
-        <div className='flex items-center gap-2 p-2 my-3 hover:bg-gray-300 hover:cursor-pointer rounded-md'>
-        <IoIosNotificationsOutline size={20} />
+          <IoIosNotificationsOutline size={20} />
 
-        <p className='text-lg font-semibold'>Notification</p>
+          <p className='text-lg font-semibold'>Notification</p>
         </div>
-        <div className='flex items-center gap-2 p-2 my-3 hover:bg-gray-300 hover:cursor-pointer rounded-md'>
-        <CgProfile />
+        <NavLink to={`profile/${user?._id}`} className={({ isActive }) => `flex items-center gap-2 p-2 my-3 hover:bg-gray-300 hover:cursor-pointer rounded-md ${isActive ? "text-gray-500" : "text-black"}`}>
+          <CgProfile />
 
-        <p className='text-lg font-semibold'>Profile</p>
-        </div>
+          <p className='text-lg font-semibold'>Profile</p>
+        </NavLink >
         <div className='flex items-center gap-2 p-2 my-3 hover:bg-gray-300 hover:cursor-pointer rounded-md'>
-        <CiBookmark />
+          <CiBookmark />
 
-        <p className='text-lg font-semibold'>Bookmarks</p>
+          <p className='text-lg font-semibold'>Bookmarks</p>
         </div>
-        <div className='flex items-center gap-2 p-2 my-3 hover:bg-gray-300 hover:cursor-pointer rounded-md'>
-        <IoMdLogOut />
-        <p className='text-lg font-semibold'>Logout</p>
+        <div onClick={logoutHandler} className='flex items-center gap-2 p-2 my-3 hover:bg-gray-300 hover:cursor-pointer rounded-md'>
+          <IoMdLogOut />
+          <p className='text-lg font-semibold'>Logout</p>
         </div>
 
         <button className='py-2 px-2 font-bold text-lg text-white bg-blue-500 hover:scale-105 transition rounded-full w-full'>Post</button>
-        </div>
-        
+      </div>
+
     </div>
   )
 }
